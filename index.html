@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#243b67">
+  <title>StudyManager | إدارة الدراسة</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">S</div>
+    <div><h1>StudyManager</h1><p>إدارة واجباتك ومهامك الدراسية</p></div>
+    <button id="logoutBtn" class="btn btn-quiet hidden" type="button">تسجيل الخروج</button>
+  </header>
+
+  <main class="container">
+    <section id="loginView" class="panel login-panel">
+      <div class="eyebrow">مساحتك الدراسية</div>
+      <h2>مرحبًا بعودتك</h2>
+      <p class="muted">أدخل رمز الدخول الخاص بك لعرض مهامك فقط.</p>
+      <form id="loginForm">
+        <label for="accessCode">رمز الدخول</label>
+        <input id="accessCode" name="accessCode" type="password" autocomplete="current-password" required placeholder="أدخل رمزك الخاص">
+        <button class="btn btn-primary full" type="submit">دخول</button>
+      </form>
+      <p id="loginMessage" class="message" role="status"></p>
+    </section>
+
+    <section id="appView" class="hidden">
+      <div class="welcome-row">
+        <div><div class="eyebrow">لوحة التحكم</div><h2>أهلًا، <span id="userName">...</span></h2><p class="muted">هذه مساحة مهامك الشخصية.</p></div>
+        <button id="refreshBtn" class="btn btn-secondary" type="button">تحديث المهام</button>
+      </div>
+
+      <section class="stats-grid">
+        <article class="stat-card"><span>كل المهام</span><strong id="totalCount">0</strong></article>
+        <article class="stat-card"><span>قيد الإنجاز</span><strong id="openCount">0</strong></article>
+        <article class="stat-card"><span>مكتملة</span><strong id="doneCount">0</strong></article>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading"><div><h3 id="formHeading">إضافة مهمة جديدة</h3><p class="muted">املأ التفاصيل ثم احفظ.</p></div></div>
+        <form id="taskForm" class="task-form">
+          <input type="hidden" id="taskId">
+          <div class="field"><label for="taskTitle">عنوان المهمة *</label><input id="taskTitle" required maxlength="180" placeholder="مثال: حل واجب الرياضيات"></div>
+          <div class="field"><label for="taskType">النوع</label><select id="taskType"><option value="واجب">واجب</option><option value="محاضرة">محاضرة</option><option value="مراجعة">مراجعة</option><option value="امتحان">امتحان</option><option value="أخرى">أخرى</option></select></div>
+          <div class="field"><label for="taskSubject">المادة</label><input id="taskSubject" maxlength="120" placeholder="اسم المادة"></div>
+          <div class="field"><label for="taskDue">موعد التسليم</label><input id="taskDue" type="date"></div>
+          <div class="field field-wide"><label for="taskDetails">التفاصيل</label><textarea id="taskDetails" rows="3" maxlength="3000" placeholder="تفاصيل المهمة أو ملاحظاتك"></textarea></div>
+          <div class="form-actions field-wide"><button id="saveTaskBtn" class="btn btn-primary" type="submit">حفظ المهمة</button><button id="cancelEditBtn" class="btn btn-secondary hidden" type="button">إلغاء التعديل</button></div>
+        </form>
+        <p id="taskMessage" class="message" role="status"></p>
+      </section>
+
+      <section class="tasks-section">
+        <div class="section-heading"><div><h3>مهامي</h3><p class="muted">لا تظهر هنا إلا المهام المرتبطة بحسابك.</p></div>
+          <select id="filterSelect" aria-label="تصفية المهام"><option value="all">كل المهام</option><option value="open">غير المكتملة</option><option value="done">المكتملة</option></select>
+        </div>
+        <div id="tasksList" class="tasks-list"></div>
+        <p id="emptyState" class="empty-state">لا توجد مهام لعرضها حتى الآن.</p>
+      </section>
+    </section>
+    <p id="globalMessage" class="message global-message" role="status"></p>
+  </main>
+  <footer>StudyManager · نظّم دراستك خطوة بخطوة</footer>
+  <script src="app.js"></script>
+</body>
+</html>

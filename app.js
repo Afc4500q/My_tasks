@@ -2,7 +2,7 @@
  * ضع رابط تطبيق Google Apps Script المنشور في WEB_APP_URL.
  * هذا الملف يتوقع أن يدعم Apps Script طلبات JSONP عبر doGet.
  */
-const WEB_APP_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwBUvZ44GMOGbkUYkoeuEcZ3bw4VdXfkzCXHwKOEn2dt93wP9_rbyjNqxbTEKtQk3R1/exec";
 const $ = (id) => document.getElementById(id);
 let currentUser = null;
 let sessionToken = null;

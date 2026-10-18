@@ -29,7 +29,11 @@
 
     <section id="appView" class="hidden">
       <div class="welcome-row">
-        <div><div class="eyebrow">لوحة التحكم</div><h2>أهلًا، <span id="userName">...</span></h2><p class="muted">هذه مساحة مهامك الشخصية.</p></div>
+        <div>
+          <div class="eyebrow">لوحة التحكم <span id="userDeptBadge" class="dept-badge hidden"></span></div>
+          <h2>أهلًا، <span id="userName">...</span></h2>
+          <p class="muted">هذه مساحة مهامك الشخصية والجماعية الخاصة بقسمك.</p>
+        </div>
         <button id="refreshBtn" class="btn btn-secondary" type="button">تحديث المهام</button>
       </div>
 
@@ -40,7 +44,7 @@
       </section>
 
       <section class="panel">
-        <div class="section-heading"><div><h3 id="formHeading">إضافة مهمة جديدة</h3><p class="muted">املأ التفاصيل ثم احفظ.</p></div></div>
+        <div class="section-heading"><div><h3 id="formHeading">إضافة مهمة جديدة</h3><p class="muted">املأ التفاصيل ثم احفظ (يُمنع تكرار نفس المهمة تلقائيًا).</p></div></div>
         <form id="taskForm" class="task-form">
           <input type="hidden" id="taskId">
           <div class="field"><label for="taskTitle">عنوان المهمة *</label><input id="taskTitle" required maxlength="180" placeholder="مثال: حل واجب الرياضيات"></div>
@@ -48,13 +52,24 @@
           <div class="field"><label for="taskSubject">المادة</label><input id="taskSubject" maxlength="120" placeholder="اسم المادة"></div>
           <div class="field"><label for="taskDue">موعد التسليم</label><input id="taskDue" type="date"></div>
           <div class="field field-wide"><label for="taskDetails">التفاصيل</label><textarea id="taskDetails" rows="3" maxlength="3000" placeholder="تفاصيل المهمة أو ملاحظاتك"></textarea></div>
+
+          <div id="groupOptionWrapper" class="field field-wide">
+            <label class="checkbox-card" for="taskIsGroup">
+              <input id="taskIsGroup" type="checkbox">
+              <div class="checkbox-content">
+                <strong>👥 نشر كمهمة جماعية لجميع طلاب قسمي</strong>
+                <span>ستظهر المهمة لدى جميع زملائك في نفس القسم، مع بقاء حالة الإنجاز مستقلة لكل طالب.</span>
+              </div>
+            </label>
+          </div>
+
           <div class="form-actions field-wide"><button id="saveTaskBtn" class="btn btn-primary" type="submit">حفظ المهمة</button><button id="cancelEditBtn" class="btn btn-secondary hidden" type="button">إلغاء التعديل</button></div>
         </form>
         <p id="taskMessage" class="message" role="status"></p>
       </section>
 
       <section class="tasks-section">
-        <div class="section-heading"><div><h3>مهامي</h3><p class="muted">لا تظهر هنا إلا المهام المرتبطة بحسابك.</p></div>
+        <div class="section-heading"><div><h3>مهامي</h3><p class="muted">لا تظهر هنا إلا المهام المرتبطة بحسابك وإنجازك الفردي.</p></div>
           <select id="filterSelect" aria-label="تصفية المهام"><option value="all">كل المهام</option><option value="open">غير المكتملة</option><option value="done">المكتملة</option></select>
         </div>
         <div id="tasksList" class="tasks-list"></div>

@@ -81,17 +81,20 @@ function renderTasks() {
     actions.append(toggle, edit, del); card.append(main, actions); $("tasksList").append(card);
   });
 }
-async function loadTasks() {
-  setMessage("taskMessage", "جارٍ تحميل المهام...");
+async function loadTasks(preserveMessage = false) {
+  if (!preserveMessage) setMessage("taskMessage", "جارٍ تحميل المهام...");
   try {
     const result = await api("listTasks", {token: sessionToken});
     if (!result || result.success !== true) throw new Error(result?.message || "لم نتمكن من تحميل المهام.");
     tasks = (Array.isArray(result.tasks) ? result.tasks : []).map(normalizeTask);
-    renderTasks(); setMessage("taskMessage", "", true);
+    renderTasks();
+    if (!preserveMessage) setMessage("taskMessage", "", true);
   } catch (err) { setMessage("taskMessage", err.message); }
 }
 function resetTaskForm() {
   $("taskForm").reset(); $("taskId").value = "";
+  if ($("taskIsGroup")) $("taskIsGroup").checked = false;
+  if ($("groupOptionWrapper")) $("groupOptionWrapper").classList.remove("hidden");
   $("formHeading").textContent = "إضافة مهمة جديدة";
   $("saveTaskBtn").textContent = "حفظ المهمة";
   $("cancelEditBtn").classList.add("hidden");
@@ -100,6 +103,8 @@ function editTask(task) {
   $("taskId").value = task.id; $("taskTitle").value = task.title;
   $("taskType").value = task.type || "واجب"; $("taskSubject").value = task.subject;
   $("taskDue").value = task.dueDate; $("taskDetails").value = task.details;
+  if ($("taskIsGroup")) $("taskIsGroup").checked = false;
+  if ($("groupOptionWrapper")) $("groupOptionWrapper").classList.add("hidden");
   $("formHeading").textContent = "تعديل المهمة"; $("saveTaskBtn").textContent = "حفظ التعديلات";
   $("cancelEditBtn").classList.remove("hidden");
   window.scrollTo({top: $("taskForm").getBoundingClientRect().top + window.scrollY - 20, behavior:"smooth"});
@@ -107,17 +112,21 @@ function editTask(task) {
 async function submitTask(event) {
   event.preventDefault();
   const id = $("taskId").value;
+  const isGroup = !id && $("taskIsGroup") ? $("taskIsGroup").checked : false;
   const payload = {
     token: sessionToken, id, title: $("taskTitle").value.trim(),
     type: $("taskType").value, subject: $("taskSubject").value.trim(),
-    dueDate: $("taskDue").value, details: $("taskDetails").value.trim()
+    dueDate: $("taskDue").value, details: $("taskDetails").value.trim(),
+    isGroup: isGroup ? "true" : "false"
   };
   if (!payload.title) return setMessage("taskMessage", "اكتب عنوان المهمة أولًا.");
   $("saveTaskBtn").disabled = true;
   try {
     const result = await api(id ? "updateTask" : "addTask", payload);
     if (!result || result.success !== true) throw new Error(result?.message || "تعذر حفظ المهمة.");
-    resetTaskForm(); setMessage("taskMessage", "تم حفظ المهمة بنجاح.", true); await loadTasks();
+    resetTaskForm();
+    setMessage("taskMessage", result.message || "تم حفظ المهمة بنجاح.", true);
+    await loadTasks(true);
   } catch (err) { setMessage("taskMessage", err.message); }
   finally { $("saveTaskBtn").disabled = false; }
 }
@@ -143,12 +152,21 @@ $("loginForm").addEventListener("submit", async event => {
     if (!result?.success || !result.token) throw new Error(result?.message || "رمز الدخول غير صحيح.");
     sessionToken = result.token; currentUser = result.user || {};
     $("userName").textContent = currentUser.name || "المستخدم";
+    const deptBadge = $("userDeptBadge");
+    if (deptBadge) {
+      if (currentUser.department) {
+        deptBadge.textContent = "قسم: " + currentUser.department;
+        deptBadge.classList.remove("hidden");
+      } else {
+        deptBadge.classList.add("hidden");
+      }
+    }
     $("accessCode").value = ""; showApp(true); await loadTasks();
   } catch(err) { setMessage("loginMessage", err.message); }
 });
 $("taskForm").addEventListener("submit", submitTask);
 $("cancelEditBtn").addEventListener("click", resetTaskForm);
-$("refreshBtn").addEventListener("click", loadTasks);
+$("refreshBtn").addEventListener("click", () => loadTasks(false));
 $("filterSelect").addEventListener("change", renderTasks);
 $("logoutBtn").addEventListener("click", async () => {
   try { await api("logout", {token: sessionToken}); } catch (_) {}

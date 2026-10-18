@@ -10,11 +10,18 @@ body{margin:0;min-height:100vh}
 .panel{background:#fff;border:1px solid #e4e8f1;border-radius:20px;padding:24px;box-shadow:0 8px 28px #1e31500a;margin-bottom:22px}
 .login-panel{max-width:460px;margin:50px auto}
 h2{font-size:26px;margin:4px 0 8px}h3{font-size:19px;margin:0}
-p{line-height:1.7}.muted{color:#7b8498;font-size:13px;margin:4px 0 18px}.eyebrow{font-size:12px;color:#5575b9;font-weight:800}
+p{line-height:1.7}.muted{color:#7b8498;font-size:13px;margin:4px 0 18px}.eyebrow{font-size:12px;color:#5575b9;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dept-badge{background:#edf1f8;color:#294779;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700}
 label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
 input,select,textarea{font:inherit;width:100%;border:1px solid #d9dfeb;border-radius:11px;padding:12px 13px;background:#fff;color:#172033;outline:none}
 input:focus,select:focus,textarea:focus{border-color:#5575b9;box-shadow:0 0 0 3px #5575b91a}
 form label{margin-top:12px}form input,form select,form textarea{margin-bottom:5px}
+.checkbox-card{display:flex;align-items:flex-start;gap:12px;background:#f8faff;border:1px solid #d9e2f3;border-radius:12px;padding:12px 14px;cursor:pointer;margin-top:10px;transition:border-color .15s,background .15s}
+.checkbox-card:hover{border-color:#5575b9;background:#f1f5fe}
+.checkbox-card input[type="checkbox"]{width:18px;height:18px;margin:3px 0 0;accent-color:#294779;cursor:pointer;flex-shrink:0}
+.checkbox-content{display:flex;flex-direction:column;gap:2px}
+.checkbox-content strong{font-size:13px;color:#172033}
+.checkbox-content span{font-size:12px;color:#6d778b;font-weight:500}
 .btn{border:0;border-radius:11px;padding:11px 17px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:transform .12s,opacity .12s}
 .btn:active{transform:scale(.98)}.btn:disabled{opacity:.6;cursor:wait}
 .btn-primary{background:#294779;color:white}.btn-secondary{background:#edf1f8;color:#294779}.btn-quiet{background:transparent;color:#52617a;border:1px solid #dfe5ef}
